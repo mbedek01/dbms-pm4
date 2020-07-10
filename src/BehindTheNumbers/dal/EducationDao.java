@@ -97,6 +97,65 @@ public class EducationDao {
 	 * 
 	 * 
 	 */
+	public Education getEducationRecordByID(int recordID) throws SQLException {
+		
+		String selectEducation =
+			"SELECT RecordID,Year,EducationLevelID,EducationLevel,NumberOfPeople,Percentage,CountyID " +
+			"FROM Education " +
+			"WHERE CountyID=?;";
+		
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		
+		try {
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectEducation);
+			selectStmt.setInt(1, recordID);
+			results = selectStmt.executeQuery();
+			
+			
+			if(results.next()) {
+				int RecordID = results.getInt("RecordID");
+				int Year = results.getInt("Year");
+				int EducationLevelID = results.getInt("EducationLevelID");		// do i need long?
+				String EducationLevel = results.getString("EducationLevel");
+				int NumberOfPeople = results.getInt("NumberOfPeople");
+				float Percentage = results.getInt("Percentage");
+				int CountyID = results.getInt("CountyID");
+				
+				Education education = new Education(RecordID, Year, EducationLevelID, EducationLevel,
+						NumberOfPeople, Percentage, CountyID);
+				
+				return education;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(selectStmt != null) {
+				selectStmt.close();
+			}
+			if(results != null) {
+				results.close();
+			}
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Get the education record by fetching it from your MySQL instance.
+	 * This runs a SELECT statement and returns a single Education instance.
+	 * 
+	 * 
+	 */
 	public Education getEducationRecordByCountyID(int countyID) throws SQLException {
 		
 		String selectEducation =

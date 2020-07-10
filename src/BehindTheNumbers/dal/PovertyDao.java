@@ -96,6 +96,67 @@ public class PovertyDao {
 	
 	
 	
+	
+	/**
+	 * Get the poverty record by fetching it from your MySQL instance.
+	 * This runs a SELECT statement and returns a single Poverty instance.
+	 * 
+	 * 
+	 */
+	public Poverty getPovertyRecordByID(int recordID) throws SQLException {
+		
+		String selectPoverty =
+			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,ConfidenceInterval,"
+			+ "AgeGroupID,CountyID " +
+			"FROM Poverty " +
+			"WHERE CountyID=?;";
+		
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		
+		try {
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectPoverty);
+			selectStmt.setInt(1, recordID);
+			results = selectStmt.executeQuery();
+			
+			
+			if(results.next()) {
+				int RecordID = results.getInt("RecordID");
+				int Year = results.getInt("Year");
+				int PovertyPopulation = results.getInt("PovertyPopulation");				// do i need long?
+				float PercentPovertyPopulation = results.getInt("PercentPovertyPopulation");
+				String ConfidenceInterval = results.getString("ConfidenceInterval");
+				int AgeGroupID = results.getInt("AgeGroupID");
+				int CountyID = results.getInt("CountyID");
+				
+				Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
+						ConfidenceInterval, AgeGroupID, CountyID);
+				
+				return poverty;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(selectStmt != null) {
+				selectStmt.close();
+			}
+			if(results != null) {
+				results.close();
+			}
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
 	/**
 	 * Get the poverty record by fetching it from your MySQL instance.
 	 * This runs a SELECT statement and returns a single Poverty instance.
