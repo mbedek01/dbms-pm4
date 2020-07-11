@@ -1,23 +1,26 @@
 package BehindTheNumbers.model;
 
+import java.math.BigDecimal;
+
 public class Employment {
 
 	// 9 attributes
-	protected int EmploymentRecordID;
-	protected int Year;
-	protected int EmployedPopulation;
-	protected int UnemployedPopulation;
-	protected float UnemployedRate;
-	protected int MedianHouseHoldIncomeInDollars;
-	protected float MedianHouseHoldIncomePercentageOfStateTotal;
-	protected int CivilianLaborForceAnnualAverage;
-	protected int CountyID;
+	protected int EmploymentRecordID;									// PK, NN, AI
+	protected Integer Year;												// nullable
+	protected Integer EmployedPopulation;								// nullable
+	protected Integer UnemployedPopulation;								// nullable
+	protected BigDecimal UnemployedRate;								// nullable
+	protected Integer MedianHouseHoldIncomeInDollars;					// nullable
+	protected BigDecimal MedianHouseHoldIncomePercentageOfStateTotal;	// nullable
+	protected Integer CivilianLaborForceAnnualAverage;					// nullable
+	protected int CountyID;												// FK, NN
 	
 	
 	// Constructor 1
-	public Employment(int EmploymentRecordID, int Year, int EmployedPopulation, int UnemployedPopulation, 
-			float UnemployedRate, int MedianHouseHoldIncomeInDollars, 
-			float MedianHouseHoldIncomePercentageOfStateTotal, int CivilianLaborForceAnnualAverage, int CountyID) {
+	public Employment(int EmploymentRecordID, Integer Year, Integer EmployedPopulation, 
+			Integer UnemployedPopulation, BigDecimal UnemployedRate, Integer MedianHouseHoldIncomeInDollars, 
+			BigDecimal MedianHouseHoldIncomePercentageOfStateTotal, Integer CivilianLaborForceAnnualAverage, 
+			int CountyID) {
 		
 		this.EmploymentRecordID = EmploymentRecordID;
 		this.Year = Year;
@@ -38,9 +41,10 @@ public class Employment {
 	
 	
 	// Constructor 3
-	public Employment(int Year, int EmployedPopulation, int UnemployedPopulation, 
-			float UnemployedRate, int MedianHouseHoldIncomeInDollars, 
-			float MedianHouseHoldIncomePercentageOfStateTotal, int CivilianLaborForceAnnualAverage, int CountyID) {
+	public Employment(Integer Year, Integer EmployedPopulation, Integer UnemployedPopulation, 
+			BigDecimal UnemployedRate, Integer MedianHouseHoldIncomeInDollars, 
+			BigDecimal MedianHouseHoldIncomePercentageOfStateTotal, Integer CivilianLaborForceAnnualAverage,
+			int CountyID) {
 		
 		
 		this.Year = Year;
@@ -64,72 +68,72 @@ public class Employment {
 	}
 
 
-	public int getYear() {
+	public Integer getYear() {
 		return Year;
 	}
 
 
-	public void setYear(int year) {
+	public void setYear(Integer year) {
 		Year = year;
 	}
 
 
-	public int getEmployedPopulation() {
+	public Integer getEmployedPopulation() {
 		return EmployedPopulation;
 	}
 
 
-	public void setEmployedPopulation(int employedPopulation) {
+	public void setEmployedPopulation(Integer employedPopulation) {
 		EmployedPopulation = employedPopulation;
 	}
 
 
-	public int getUnemployedPopulation() {
+	public Integer getUnemployedPopulation() {
 		return UnemployedPopulation;
 	}
 
 
-	public void setUnemployedPopulation(int unemployedPopulation) {
+	public void setUnemployedPopulation(Integer unemployedPopulation) {
 		UnemployedPopulation = unemployedPopulation;
 	}
 
 
-	public float getUnemployedRate() {
+	public BigDecimal getUnemployedRate() {
 		return UnemployedRate;
 	}
 
 
-	public void setUnemployedRate(float unemployedRate) {
+	public void setUnemployedRate(BigDecimal unemployedRate) {
 		UnemployedRate = unemployedRate;
 	}
 
 
-	public int getMedianHouseHoldIncomeInDollars() {
+	public Integer getMedianHouseHoldIncomeInDollars() {
 		return MedianHouseHoldIncomeInDollars;
 	}
 
 
-	public void setMedianHouseHoldIncomeInDollars(int medianHouseHoldIncomeInDollars) {
+	public void setMedianHouseHoldIncomeInDollars(Integer medianHouseHoldIncomeInDollars) {
 		MedianHouseHoldIncomeInDollars = medianHouseHoldIncomeInDollars;
 	}
 
 
-	public float getMedianHouseHoldIncomePercentageOfStateTotal() {
+	public BigDecimal getMedianHouseHoldIncomePercentageOfStateTotal() {
 		return MedianHouseHoldIncomePercentageOfStateTotal;
 	}
 
 
-	public void setMedianHouseHoldIncomePercentageOfStateTotal(float medianHouseHoldIncomePercentageOfStateTotal) {
+	public void setMedianHouseHoldIncomePercentageOfStateTotal(BigDecimal medianHouseHoldIncomePercentageOfStateTotal) {
 		MedianHouseHoldIncomePercentageOfStateTotal = medianHouseHoldIncomePercentageOfStateTotal;
 	}
 
 
-	public int getCivilianLaborForceAnnualAverage() {
+	public Integer getCivilianLaborForceAnnualAverage() {
 		return CivilianLaborForceAnnualAverage;
 	}
 
 
-	public void setCivilianLaborForceAnnualAverage(int civilianLaborForceAnnualAverage) {
+	public void setCivilianLaborForceAnnualAverage(Integer civilianLaborForceAnnualAverage) {
 		CivilianLaborForceAnnualAverage = civilianLaborForceAnnualAverage;
 	}
 

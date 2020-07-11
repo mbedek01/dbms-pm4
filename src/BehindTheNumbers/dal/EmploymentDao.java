@@ -1,10 +1,13 @@
 package BehindTheNumbers.dal;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
+
 
 import BehindTheNumbers.model.Employment;
 
@@ -49,16 +52,15 @@ public class EmploymentDao {
 			connection = connectionManager.getConnection();
 			
 			// Employment has an auto-generated key. So we want to retrieve that key.
-			insertStmt = connection.prepareStatement(insertEmployment,
-				Statement.RETURN_GENERATED_KEYS);
+			insertStmt = connection.prepareStatement(insertEmployment, Statement.RETURN_GENERATED_KEYS);
 			
-			insertStmt.setInt(1, employment.getYear());
-			insertStmt.setInt(2, employment.getEmployedPopulation());
-			insertStmt.setInt(3, employment.getUnemployedPopulation());
-			insertStmt.setFloat(4, employment.getUnemployedRate());
-			insertStmt.setInt(5, employment.getMedianHouseHoldIncomeInDollars());
-			insertStmt.setFloat(6, employment.getMedianHouseHoldIncomePercentageOfStateTotal());
-			insertStmt.setInt(7, employment.getCivilianLaborForceAnnualAverage());
+			insertStmt.setObject(1, employment.getYear(), Types.INTEGER);
+			insertStmt.setObject(2, employment.getEmployedPopulation(), Types.INTEGER);
+			insertStmt.setObject(3, employment.getUnemployedPopulation(), Types.INTEGER);
+			insertStmt.setObject(4, employment.getUnemployedRate(), Types.DECIMAL);
+			insertStmt.setObject(5, employment.getMedianHouseHoldIncomeInDollars(), Types.INTEGER);
+			insertStmt.setObject(6, employment.getMedianHouseHoldIncomePercentageOfStateTotal(), Types.DECIMAL);
+			insertStmt.setObject(7, employment.getCivilianLaborForceAnnualAverage(), Types.INTEGER);
 			insertStmt.setInt(8, employment.getCountyID());
 			
 			insertStmt.executeUpdate();
@@ -66,13 +68,13 @@ public class EmploymentDao {
 			// Retrieve the auto-generated key and set it, so it can be used by the caller.
 			
 			resultKey = insertStmt.getGeneratedKeys();
-			int EmploymentRecordID = -1;
+			int nextID = -1;
 			if(resultKey.next()) {
-				EmploymentRecordID = resultKey.getInt(1);
+				nextID = resultKey.getInt(1);
 			} else {
 				throw new SQLException("Unable to retrieve auto-generated key.");
 			}
-			employment.setEmploymentRecordID(EmploymentRecordID);
+			employment.setEmploymentRecordID(nextID);
 			return employment;
 			
 		} catch (SQLException e) {
@@ -122,14 +124,16 @@ public class EmploymentDao {
 			
 			if(results.next()) {
 				int EmploymentRecordID = results.getInt("EmploymentRecordID");
-				int Year = results.getInt("Year");
-				int EmployedPopulation = results.getInt("EmployedPopulation");		// do i need long?
-				int UnemployedPopulation = results.getInt("UnemployedPopulation");
-				float UnemployedRate = results.getFloat("UnemployedRate");
-				int MedianHouseHoldIncomeInDollars = results.getInt("MedianHouseHoldIncomeInDollars");
-				float MedianHouseHoldIncomePercentageOfStateTotal = 
-						results.getFloat("MedianHouseHoldIncomePercentageOfStateTotal");
-				int CivilianLaborForceAnnualAverage = results.getInt("CivilianLaborForceAnnualAverage");
+				Integer Year = (Integer) results.getObject("Year");
+				Integer EmployedPopulation = (Integer) results.getObject("EmployedPopulation");		// do i need long?
+				Integer UnemployedPopulation = (Integer) results.getObject("UnemployedPopulation");
+				BigDecimal UnemployedRate = (BigDecimal)results.getObject("UnemployedRate");
+				Integer MedianHouseHoldIncomeInDollars = 
+						(Integer) results.getObject("MedianHouseHoldIncomeInDollars");
+				BigDecimal MedianHouseHoldIncomePercentageOfStateTotal = 
+						(BigDecimal) results.getObject("MedianHouseHoldIncomePercentageOfStateTotal");
+				Integer CivilianLaborForceAnnualAverage = 
+						(Integer) results.getObject("CivilianLaborForceAnnualAverage");
 				int CountyID = results.getInt("CountyID");
 				
 				Employment employment = new Employment(EmploymentRecordID, Year, EmployedPopulation, 
@@ -184,14 +188,16 @@ public class EmploymentDao {
 			
 			if(results.next()) {
 				int EmploymentRecordID = results.getInt("EmploymentRecordID");
-				int Year = results.getInt("Year");
-				int EmployedPopulation = results.getInt("EmployedPopulation");		// do i need long?
-				int UnemployedPopulation = results.getInt("UnemployedPopulation");
-				float UnemployedRate = results.getFloat("UnemployedRate");
-				int MedianHouseHoldIncomeInDollars = results.getInt("MedianHouseHoldIncomeInDollars");
-				float MedianHouseHoldIncomePercentageOfStateTotal = 
-						results.getFloat("MedianHouseHoldIncomePercentageOfStateTotal");
-				int CivilianLaborForceAnnualAverage = results.getInt("CivilianLaborForceAnnualAverage");
+				Integer Year = (Integer) results.getObject("Year");
+				Integer EmployedPopulation = (Integer) results.getObject("EmployedPopulation");		// do i need long?
+				Integer UnemployedPopulation = (Integer) results.getObject("UnemployedPopulation");
+				BigDecimal UnemployedRate = (BigDecimal)results.getObject("UnemployedRate");
+				Integer MedianHouseHoldIncomeInDollars = 
+						(Integer) results.getObject("MedianHouseHoldIncomeInDollars");
+				BigDecimal MedianHouseHoldIncomePercentageOfStateTotal = 
+						(BigDecimal) results.getObject("MedianHouseHoldIncomePercentageOfStateTotal");
+				Integer CivilianLaborForceAnnualAverage = 
+						(Integer) results.getObject("CivilianLaborForceAnnualAverage");
 				int CountyID = results.getInt("CountyID");
 				
 				Employment employment = new Employment(EmploymentRecordID, Year, EmployedPopulation, 
@@ -216,6 +222,44 @@ public class EmploymentDao {
 		}
 		return null;
 	}
+	
+	
+	
+	
+	
+	/*
+	 * Updates the number of people that are unemployed in a particular education level category, in a particular
+	 * year for a particular county by indexing the Employment table by its Record Id.
+	 * Performs an UPDATE procedure
+	 */
+	public Employment updateNumUnemployed(Employment employment, int newNumUnemployed) throws SQLException {
+		String updateExpiration = "UPDATE Employment SET UnemployedPopulation=? WHERE RecordID=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updateExpiration);
+			updateStmt.setObject(1, newNumUnemployed);
+			updateStmt.setInt(2, employment.getEmploymentRecordID());
+			updateStmt.executeUpdate();
+
+			// Update the total education value of the Java object before returning to the caller.
+			employment.setUnemployedPopulation(newNumUnemployed);
+			return employment;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (connection != null) {
+				connection.close();
+			}
+			if (updateStmt != null) {
+				updateStmt.close();
+			}
+		}
+	}
+	
 	
 	
 	

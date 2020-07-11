@@ -1,19 +1,21 @@
 package BehindTheNumbers.model;
 
+import java.math.BigDecimal;
+
 public class Education {
 
-	protected int RecordID;
+	protected int RecordID;							// primary key, NN, AI
 	protected int Year;
-	protected int EducationLevelID;				
+	protected int EducationLevelID;					// FK, NN				
 	protected String EducationLevel;
-	protected int NumberOfPeople;
-	protected float Percentage;				// what is decimal equivalent here?
-	protected int CountyID;
+	protected Integer NumberOfPeople;				// nullable
+	protected BigDecimal Percentage;				// nullable
+	protected int CountyID;							// FK, NN
 	
 	
 	// Constructor 1
 		public Education(int RecordID, int Year, int EducationLevelID, String EducationLevel,
-				int NumberOfPeople, float Percentage, int CountyID) {
+				Integer NumberOfPeople, BigDecimal Percentage, int CountyID) {
 			
 			this.RecordID = RecordID;
 			this.Year = Year;
@@ -32,7 +34,7 @@ public class Education {
 		
 		// Constructor 3
 		public Education(int Year, int EducationLevelID, String EducationLevel,
-				int NumberOfPeople, float Percentage, int CountyID) {
+				Integer NumberOfPeople, BigDecimal Percentage, int CountyID) {
 			
 			this.Year = Year;
 			this.EducationLevelID = EducationLevelID;
@@ -74,19 +76,19 @@ public class Education {
 			EducationLevel = educationLevel;
 		}
 
-		public int getNumberOfPeople() {
+		public Integer getNumberOfPeople() {
 			return NumberOfPeople;
 		}
 
-		public void setNumberOfPeople(int numberOfPeople) {
+		public void setNumberOfPeople(Integer numberOfPeople) {
 			NumberOfPeople = numberOfPeople;
 		}
 
-		public float getPercentage() {
+		public BigDecimal getPercentage() {
 			return Percentage;
 		}
 
-		public void setPercentage(float percentage) {
+		public void setPercentage(BigDecimal percentage) {
 			Percentage = percentage;
 		}
 

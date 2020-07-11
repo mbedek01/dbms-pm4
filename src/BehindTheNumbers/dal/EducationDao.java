@@ -1,12 +1,15 @@
 package BehindTheNumbers.dal;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import BehindTheNumbers.model.Education;
+
 
 public class EducationDao {
 
@@ -54,8 +57,8 @@ public class EducationDao {
 			insertStmt.setInt(1, education.getYear());
 			insertStmt.setInt(2, education.getEducationLevelID());
 			insertStmt.setString(3, education.getEducationLevel());
-			insertStmt.setInt(4, education.getNumberOfPeople());
-			insertStmt.setFloat(5, education.getPercentage());
+			insertStmt.setObject(4, education.getNumberOfPeople(), Types.INTEGER);		// nullable
+			insertStmt.setObject(5, education.getPercentage(), Types.DECIMAL);			// nullable
 			insertStmt.setInt(6, education.getCountyID());
 			
 			insertStmt.executeUpdate();
@@ -118,10 +121,10 @@ public class EducationDao {
 			if(results.next()) {
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
-				int EducationLevelID = results.getInt("EducationLevelID");		// do i need long?
+				int EducationLevelID = results.getInt("EducationLevelID");
 				String EducationLevel = results.getString("EducationLevel");
-				int NumberOfPeople = results.getInt("NumberOfPeople");
-				float Percentage = results.getInt("Percentage");
+				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
+				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
 				Education education = new Education(RecordID, Year, EducationLevelID, EducationLevel,
@@ -179,8 +182,8 @@ public class EducationDao {
 				int Year = results.getInt("Year");
 				int EducationLevelID = results.getInt("EducationLevelID");		// do i need long?
 				String EducationLevel = results.getString("EducationLevel");
-				int NumberOfPeople = results.getInt("NumberOfPeople");
-				float Percentage = results.getInt("Percentage");
+				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
+				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
 				Education education = new Education(RecordID, Year, EducationLevelID, EducationLevel,
@@ -237,8 +240,8 @@ public class EducationDao {
 				int Year = results.getInt("Year");
 				int EducationLevelID = results.getInt("EducationPopulation");				// do i need long?
 				String EducationLevel = results.getString("PercentEducationPopulation");
-				int NumberOfPeople = results.getInt("ConfidenceInterval");
-				float Percentage = results.getFloat("AgeGroupID");
+				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
+				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
 				Education education = new Education(RecordID, Year, EducationLevelID, EducationLevel,
@@ -261,6 +264,41 @@ public class EducationDao {
 			}
 		}
 		return null;
+	}
+	
+	
+	
+	/*
+	 * Updates the number of people that are educated in a particular education level category, in a particular
+	 * year for a particular county by indexing the Education table by its Record Id.
+	 * Performs an UPDATE procedure
+	 */
+	public Education updateNumPeopleEducated(Education education, int newNumPeople) throws SQLException {
+		String updateExpiration = "UPDATE Poverty SET NumberOfPeople=? WHERE RecordID=?;";
+		Connection connection = null;
+		PreparedStatement updateStmt = null;
+		try {
+			connection = connectionManager.getConnection();
+			updateStmt = connection.prepareStatement(updateExpiration);
+			updateStmt.setInt(1, newNumPeople);
+			updateStmt.setInt(2, education.getRecordID());
+			updateStmt.executeUpdate();
+
+			// Update the total education value of the Java object before returning to the caller.
+			education.setNumberOfPeople(newNumPeople);
+			return education;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (connection != null) {
+				connection.close();
+			}
+			if (updateStmt != null) {
+				updateStmt.close();
+			}
+		}
 	}
 	
 	

@@ -1,18 +1,20 @@
 package BehindTheNumbers.model;
 
+import java.math.BigDecimal;
+
 public class Poverty {
 
 	// 7 attributes
-	protected int RecordID;
+	protected int RecordID;								// primary key, NN, AI
 	protected int Year;
-	protected int PovertyPopulation;				// do i need long?
-	protected float PercentPovertyPopulation;
-	protected String ConfidenceInterval;
-	protected int AgeGroupID;
-	protected int CountyID;
+	protected Integer PovertyPopulation;				// nullable
+	protected BigDecimal PercentPovertyPopulation;		// nullable
+	protected String ConfidenceInterval;				// nullable
+	protected int AgeGroupID;							// FK, NN
+	protected int CountyID;								// FK, NN
 	
 	// Constructor 1
-	public Poverty(int RecordID, int Year, int PovertyPopulation, float PercentPovertyPopulation,
+	public Poverty(int RecordID, int Year, Integer PovertyPopulation, BigDecimal PercentPovertyPopulation,
 			String ConfidenceInterval, int AgeGroupID, int CountyID) {
 		
 		this.RecordID = RecordID;
@@ -31,7 +33,7 @@ public class Poverty {
 
 	
 	// Constructor 3
-	public Poverty(int Year, int PovertyPopulation, float PercentPovertyPopulation,
+	public Poverty(int Year, Integer PovertyPopulation, BigDecimal PercentPovertyPopulation,
 			String ConfidenceInterval, int AgeGroupID, int CountyID) {
 		
 		this.Year = Year;
@@ -58,7 +60,7 @@ public class Poverty {
 		Year = year;
 	}
 
-	public int getPovertyPopulation() {
+	public Integer getPovertyPopulation() {
 		return PovertyPopulation;
 	}
 
@@ -66,11 +68,11 @@ public class Poverty {
 		PovertyPopulation = povertyPopulation;
 	}
 
-	public float getPercentPovertyPopulation() {
+	public BigDecimal getPercentPovertyPopulation() {
 		return PercentPovertyPopulation;
 	}
 
-	public void setPercentPovertyPopulation(float percentPovertyPopulation) {
+	public void setPercentPovertyPopulation(BigDecimal percentPovertyPopulation) {
 		PercentPovertyPopulation = percentPovertyPopulation;
 	}
 
