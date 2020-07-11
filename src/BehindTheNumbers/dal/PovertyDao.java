@@ -46,8 +46,8 @@ public class PovertyDao {
 	public static Poverty create(Poverty poverty) throws SQLException {
 		
 		String insertPoverty =
-			"INSERT INTO Poverty(Year,PovertyPopulation,PercentPovertyPopulation,ConfidenceInterval,"
-			+ "AgeGroupID,CountyID) VALUES(?,?,?,?,?,?);";
+			"INSERT INTO Poverty(Year,PovertyPopulation,PercentPovertyPopulation,"
+			+ "AgeGroupID,CountyID) VALUES(?,?,?,?,?);";
 		
 		Connection connection = null;
 		PreparedStatement insertStmt = null;
@@ -63,9 +63,9 @@ public class PovertyDao {
 			insertStmt.setInt(1, poverty.getYear());
 			insertStmt.setObject(2, poverty.getPovertyPopulation(), Types.INTEGER);			// nullable
 			insertStmt.setObject(3, poverty.getPercentPovertyPopulation(), Types.DECIMAL);	// nullable
-			insertStmt.setString(4, poverty.getConfidenceInterval());						// nullable
-			insertStmt.setInt(5, poverty.getAgeGroupID());
-			insertStmt.setInt(6, poverty.getCountyID());
+	//		insertStmt.setString(4, poverty.getConfidenceInterval());						// nullable
+			insertStmt.setInt(4, poverty.getAgeGroupID());
+			insertStmt.setInt(5, poverty.getCountyID());
 			
 			insertStmt.executeUpdate();
 			
@@ -110,7 +110,7 @@ public class PovertyDao {
 	public Poverty getPovertyRecordByID(int recordID) throws SQLException {
 		
 		String selectPoverty =
-			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,ConfidenceInterval,"
+			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
 			+ "AgeGroupID,CountyID " +
 			"FROM Poverty " +
 			"WHERE CountyID=?;";
@@ -131,12 +131,12 @@ public class PovertyDao {
 				int Year = results.getInt("Year");
 				Integer PovertyPopulation = (Integer)results.getObject("PovertyPopulation");
 				BigDecimal PercentPovertyPopulation = (BigDecimal) results.getObject("PercentPovertyPopulation");
-				String ConfidenceInterval = results.getString("ConfidenceInterval");
+				//String ConfidenceInterval = results.getString("ConfidenceInterval");
 				int AgeGroupID = results.getInt("AgeGroupID");
 				int CountyID = results.getInt("CountyID");
 				
 				Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
-						ConfidenceInterval, AgeGroupID, CountyID);
+						 AgeGroupID, CountyID);
 				
 				return poverty;
 			}
@@ -170,7 +170,7 @@ public class PovertyDao {
 	public Poverty getPovertyRecordByCountyID(int countyID) throws SQLException {
 		
 		String selectPoverty =
-			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,ConfidenceInterval,"
+			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
 			+ "AgeGroupID,CountyID " +
 			"FROM Poverty " +
 			"WHERE CountyID=?;";
@@ -191,12 +191,12 @@ public class PovertyDao {
 				int Year = results.getInt("Year");
 				Integer PovertyPopulation = (Integer)results.getObject("PovertyPopulation");
 				BigDecimal PercentPovertyPopulation = (BigDecimal) results.getObject("PercentPovertyPopulation");
-				String ConfidenceInterval = results.getString("ConfidenceInterval");
+				//String ConfidenceInterval = results.getString("ConfidenceInterval");
 				int AgeGroupID = results.getInt("AgeGroupID");
 				int CountyID = results.getInt("CountyID");
 				
 				Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
-						ConfidenceInterval, AgeGroupID, CountyID);
+						AgeGroupID, CountyID);
 				
 				return poverty;
 			}
@@ -229,7 +229,7 @@ public class PovertyDao {
 	public Poverty getPovertyRecordByAgeGroup(int ageGroupID) throws SQLException {
 		
 		String selectPoverty =
-			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,ConfidenceInterval,"
+			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
 			+ "AgeGroupID,CountyID " +
 			"FROM Poverty " +
 			"WHERE AgeGroupID=?;";
@@ -250,12 +250,12 @@ public class PovertyDao {
 				int Year = results.getInt("Year");
 				Integer PovertyPopulation = (Integer)results.getObject("PovertyPopulation");
 				BigDecimal PercentPovertyPopulation = (BigDecimal) results.getObject("PercentPovertyPopulation");
-				String ConfidenceInterval = results.getString("ConfidenceInterval");
+				//String ConfidenceInterval = results.getString("ConfidenceInterval");
 				int AgeGroupID = results.getInt("AgeGroupID");
 				int CountyID = results.getInt("CountyID");
 				
 				Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
-						ConfidenceInterval, AgeGroupID, CountyID);
+						AgeGroupID, CountyID);
 				
 				return poverty;
 			}

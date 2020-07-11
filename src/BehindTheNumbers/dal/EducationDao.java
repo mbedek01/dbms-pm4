@@ -40,8 +40,8 @@ public class EducationDao {
 	public static Education create(Education education) throws SQLException {
 		
 		String insertEducation =
-			"INSERT INTO Education(Year,EducationLevelID,EducationLevel,NumberOfPeople,"
-			+ "Percentage,CountyID) VALUES(?,?,?,?,?,?);";
+			"INSERT INTO Education(Year,EducationLevelID,NumberOfPeople,"
+			+ "Percentage,CountyID) VALUES(?,?,?,?,?);";
 		
 		Connection connection = null;
 		PreparedStatement insertStmt = null;
@@ -56,10 +56,10 @@ public class EducationDao {
 			
 			insertStmt.setInt(1, education.getYear());
 			insertStmt.setInt(2, education.getEducationLevelID());
-			insertStmt.setString(3, education.getEducationLevel());
-			insertStmt.setObject(4, education.getNumberOfPeople(), Types.INTEGER);		// nullable
-			insertStmt.setObject(5, education.getPercentage(), Types.DECIMAL);			// nullable
-			insertStmt.setInt(6, education.getCountyID());
+	//		insertStmt.setString(3, education.getEducationLevel());
+			insertStmt.setObject(3, education.getNumberOfPeople(), Types.INTEGER);		// nullable
+			insertStmt.setObject(4, education.getPercentage(), Types.DECIMAL);			// nullable
+			insertStmt.setInt(5, education.getCountyID());
 			
 			insertStmt.executeUpdate();
 			
@@ -103,7 +103,7 @@ public class EducationDao {
 	public Education getEducationRecordByID(int recordID) throws SQLException {
 		
 		String selectEducation =
-			"SELECT RecordID,Year,EducationLevelID,EducationLevel,NumberOfPeople,Percentage,CountyID " +
+			"SELECT RecordID,Year,EducationLevelID,NumberOfPeople,Percentage,CountyID " +
 			"FROM Education " +
 			"WHERE CountyID=?;";
 		
@@ -122,12 +122,12 @@ public class EducationDao {
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
 				int EducationLevelID = results.getInt("EducationLevelID");
-				String EducationLevel = results.getString("EducationLevel");
+			//	String EducationLevel = results.getString("EducationLevel");
 				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
 				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
-				Education education = new Education(RecordID, Year, EducationLevelID, EducationLevel,
+				Education education = new Education(RecordID, Year, EducationLevelID,
 						NumberOfPeople, Percentage, CountyID);
 				
 				return education;
@@ -162,7 +162,7 @@ public class EducationDao {
 	public Education getEducationRecordByCountyID(int countyID) throws SQLException {
 		
 		String selectEducation =
-			"SELECT RecordID,Year,EducationLevelID,EducationLevel,NumberOfPeople,Percentage,CountyID " +
+			"SELECT RecordID,Year,EducationLevelID,NumberOfPeople,Percentage,CountyID " +
 			"FROM Education " +
 			"WHERE CountyID=?;";
 		
@@ -181,12 +181,12 @@ public class EducationDao {
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
 				int EducationLevelID = results.getInt("EducationLevelID");		
-				String EducationLevel = results.getString("EducationLevel");
+			//	String EducationLevel = results.getString("EducationLevel");
 				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
 				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
-				Education education = new Education(RecordID, Year, EducationLevelID, EducationLevel,
+				Education education = new Education(RecordID, Year, EducationLevelID,
 						NumberOfPeople, Percentage, CountyID);
 				
 				return education;
@@ -239,12 +239,12 @@ public class EducationDao {
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
 				int EducationLevelID = results.getInt("EducationLevelID");
-				String EducationLevel = results.getString("EducationLevel");
+		//		String EducationLevel = results.getString("EducationLevel");
 				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
 				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
-				Education education = new Education(RecordID, Year, EducationLevelID, EducationLevel,
+				Education education = new Education(RecordID, Year, EducationLevelID,
 						NumberOfPeople, Percentage, CountyID);
 				
 				return education;

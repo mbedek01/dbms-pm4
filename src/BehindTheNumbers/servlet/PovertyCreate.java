@@ -3,10 +3,6 @@ package BehindTheNumbers.servlet;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,10 +17,73 @@ import BehindTheNumbers.model.Poverty;
 
 
 
-@WebServlet("/usercreate")
+@WebServlet("/povertycreate")
 public class PovertyCreate extends HttpServlet {
 
-protected PovertyDao povertyDao;
+	private static final long serialVersionUID = 1L;
+	protected PovertyDao povertyDao;
+
+	@Override
+	public void init() throws ServletException {
+		povertyDao = PovertyDao.getInstance();
+	}
+
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// Map for storing messages.
+		Map<String, String> messages = new HashMap<String, String>();
+		req.setAttribute("messages", messages);
+		// Just render the JSP.
+		req.getRequestDispatcher("/PovertyCreate.jsp").forward(req, resp);
+	}
+
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// Map for storing messages.
+		Map<String, String> messages = new HashMap<String, String>();
+		req.setAttribute("messages", messages);
+
+		// Retrieve and validate CountyID.
+		String countyId = req.getParameter("CountyID");
+		if (countyId == null || countyId.trim().isEmpty()) {
+			messages.put("success", "Invalid County ID");
+		} else {
+			// Create the Poverty record.
+			//int recordId = Integer.parseInt(req.getParameter("RecordID"));
+			int year = Integer.parseInt(req.getParameter("Year"));
+			//String s_povertyPopulation = req.getParameter("povertyPopulation");
+        	int povertyPopulation = Integer.parseInt(req.getParameter("PovertyPopulation"));
+        	
+        	//String s_percentPovertyPopulation = req.getParameter("percentPovertyPopulation");
+        	BigDecimal percentPovertyPopulation = new BigDecimal(req.getParameter("PercentPovertyPopulation"));
+        	
+        	//String ConfidenceInterval = req.getParameter("ConfidenceInterval");
+        	
+        	//String s_ageGroupId = req.getParameter("ageGroupId");
+        	Integer ageGroupId = Integer.parseInt(req.getParameter("AgeGroupID"));
+        	
+			Integer countyID = Integer.parseInt(req.getParameter("CountyID"));
+
+			try {
+				Poverty poverty = new Poverty(year, povertyPopulation, percentPovertyPopulation, 
+						 ageGroupId, countyID);
+	        	
+	        	poverty = PovertyDao.create(poverty);
+				messages.put("success", "Successfully created record" + poverty.getRecordID());
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new IOException(e);
+			}
+		}
+
+		req.getRequestDispatcher("/PovertyCreate.jsp").forward(req, resp);
+	
+	
+	
+	
+	/**
+	private static final long serialVersionUID = 1L;				// added this, check if correct
+	protected PovertyDao povertyDao;
 	
 	@Override
 	public void init() throws ServletException {
@@ -86,6 +145,7 @@ protected PovertyDao povertyDao;
 	        }
         }
         
-        req.getRequestDispatcher("/UserCreate.jsp").forward(req, resp);
+        req.getRequestDispatcher("/PovertyCreate.jsp").forward(req, resp);
+        */
     }
 }

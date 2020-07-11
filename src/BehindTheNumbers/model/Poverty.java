@@ -9,19 +9,19 @@ public class Poverty {
 	protected int Year;
 	protected Integer PovertyPopulation;				// nullable
 	protected BigDecimal PercentPovertyPopulation;		// nullable
-	protected String ConfidenceInterval;				// nullable
+	//protected String ConfidenceInterval;				// nullable
 	protected int AgeGroupID;							// FK, NN
 	protected int CountyID;								// FK, NN
 	
 	// Constructor 1
 	public Poverty(int RecordID, int Year, Integer PovertyPopulation, BigDecimal PercentPovertyPopulation,
-			String ConfidenceInterval, int AgeGroupID, int CountyID) {
+			int AgeGroupID, int CountyID) {
 		
 		this.RecordID = RecordID;
 		this.Year = Year;
 		this.PovertyPopulation = PovertyPopulation;
 		this.PercentPovertyPopulation = PercentPovertyPopulation;
-		this.ConfidenceInterval = ConfidenceInterval;
+		//this.ConfidenceInterval = ConfidenceInterval;
 		this.AgeGroupID = AgeGroupID;
 		this.CountyID = CountyID;
 	}
@@ -34,12 +34,12 @@ public class Poverty {
 	
 	// Constructor 3
 	public Poverty(int Year, Integer PovertyPopulation, BigDecimal PercentPovertyPopulation,
-			String ConfidenceInterval, int AgeGroupID, int CountyID) {
+			int AgeGroupID, int CountyID) {
 		
 		this.Year = Year;
 		this.PovertyPopulation = PovertyPopulation;
 		this.PercentPovertyPopulation = PercentPovertyPopulation;
-		this.ConfidenceInterval = ConfidenceInterval;
+		//this.ConfidenceInterval = ConfidenceInterval;
 		this.AgeGroupID = AgeGroupID;
 		this.CountyID = CountyID;
 	}
@@ -76,14 +76,14 @@ public class Poverty {
 		PercentPovertyPopulation = percentPovertyPopulation;
 	}
 
-	public String getConfidenceInterval() {
+/*	public String getConfidenceInterval() {
 		return ConfidenceInterval;
 	}
 
 	public void setConfidenceInterval(String confidenceInterval) {
 		ConfidenceInterval = confidenceInterval;
 	}
-
+*/
 	public int getAgeGroupID() {
 		return AgeGroupID;
 	}

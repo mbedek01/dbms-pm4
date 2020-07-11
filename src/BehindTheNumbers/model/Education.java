@@ -7,20 +7,20 @@ public class Education {
 	protected int RecordID;							// primary key, NN, AI
 	protected int Year;
 	protected int EducationLevelID;					// FK, NN				
-	protected String EducationLevel;
+	//protected String EducationLevel;
 	protected Integer NumberOfPeople;				// nullable
 	protected BigDecimal Percentage;				// nullable
 	protected int CountyID;							// FK, NN
 	
 	
 	// Constructor 1
-		public Education(int RecordID, int Year, int EducationLevelID, String EducationLevel,
+		public Education(int RecordID, int Year, int EducationLevelID,
 				Integer NumberOfPeople, BigDecimal Percentage, int CountyID) {
 			
 			this.RecordID = RecordID;
 			this.Year = Year;
 			this.EducationLevelID = EducationLevelID;
-			this.EducationLevel = EducationLevel;
+			//this.EducationLevel = EducationLevel;
 			this.NumberOfPeople = NumberOfPeople;
 			this.Percentage = Percentage;
 			this.CountyID = CountyID;
@@ -33,12 +33,12 @@ public class Education {
 
 		
 		// Constructor 3
-		public Education(int Year, int EducationLevelID, String EducationLevel,
+		public Education(int Year, int EducationLevelID, 
 				Integer NumberOfPeople, BigDecimal Percentage, int CountyID) {
 			
 			this.Year = Year;
 			this.EducationLevelID = EducationLevelID;
-			this.EducationLevel = EducationLevel;
+			//this.EducationLevel = EducationLevel;
 			this.NumberOfPeople = NumberOfPeople;
 			this.Percentage = Percentage;
 			this.CountyID = CountyID;
@@ -68,14 +68,14 @@ public class Education {
 			EducationLevelID = educationLevelID;
 		}
 
-		public String getEducationLevel() {
+	/*	public String getEducationLevel() {
 			return EducationLevel;
 		}
 
 		public void setEducationLevel(String educationLevel) {
 			EducationLevel = educationLevel;
 		}
-
+*/
 		public Integer getNumberOfPeople() {
 			return NumberOfPeople;
 		}
