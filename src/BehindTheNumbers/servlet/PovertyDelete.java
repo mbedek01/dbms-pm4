@@ -56,10 +56,10 @@ protected PovertyDao povertyDao;
 	        	poverty = povertyDao.delete(poverty);
 	        	// Update the message.
 		        if (poverty == null) {
-		            messages.put("title", "Successfully deleted " + RecordID);
+		            messages.put("title", "Successfully deleted record " + RecordID);
 		            messages.put("disableSubmit", "true");
 		        } else {
-		        	messages.put("title", "Failed to delete " + poverty.getRecordID());
+		        	messages.put("title", "Failed to delete record " + RecordID);
 		        	messages.put("disableSubmit", "false");
 		        }
 	        } catch (SQLException e) {

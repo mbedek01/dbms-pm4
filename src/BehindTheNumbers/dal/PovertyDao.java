@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 import BehindTheNumbers.model.Poverty;
 
@@ -160,13 +162,67 @@ public class PovertyDao {
 	
 	
 	
+	public List<Poverty> getPovertyRecordsByCountyID(int countyID) throws SQLException {
+		String selectPoverty =
+				"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
+				+ "AgeGroupID,CountyID " +
+				"FROM Poverty " +
+				"WHERE CountyID=?;";
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try {
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectPoverty);
+			selectStmt.setInt(1, countyID);
+
+			results = selectStmt.executeQuery();
+			
+			List<Poverty> povertyRecordsList = new ArrayList<>();
+
+			while (results.next()) {
+				
+					int RecordID = results.getInt("RecordID");
+					int Year = results.getInt("Year");
+					Integer PovertyPopulation = (Integer)results.getObject("PovertyPopulation");
+					BigDecimal PercentPovertyPopulation = (BigDecimal) results.getObject("PercentPovertyPopulation");
+					//String ConfidenceInterval = results.getString("ConfidenceInterval");
+					int AgeGroupID = results.getInt("AgeGroupID");
+					int CountyID = results.getInt("CountyID");
+					
+					Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
+							AgeGroupID, CountyID);
+					povertyRecordsList.add(poverty);
+			}
+			
+			return povertyRecordsList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (connection != null) {
+				connection.close();
+			}
+			if (selectStmt != null) {
+				selectStmt.close();
+			}
+			if (results != null) {
+				results.close();
+			}
+		}
+	}
 	
+	
+	
+	
+	
+/*	
 	/**
 	 * Get the poverty record by fetching it from your MySQL instance.
 	 * This runs a SELECT statement and returns a single Poverty instance.
 	 * 
 	 * 
-	 */
+	 
 	public Poverty getPovertyRecordByCountyID(int countyID) throws SQLException {
 		
 		String selectPoverty =
@@ -217,7 +273,7 @@ public class PovertyDao {
 		return null;
 	}
 	
-	
+*/	
 	
 	
 	/**
