@@ -180,7 +180,7 @@ public class EducationDao {
 			if(results.next()) {
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
-				int EducationLevelID = results.getInt("EducationLevelID");		// do i need long?
+				int EducationLevelID = results.getInt("EducationLevelID");		
 				String EducationLevel = results.getString("EducationLevel");
 				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
 				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
@@ -238,8 +238,8 @@ public class EducationDao {
 			if(results.next()) {
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
-				int EducationLevelID = results.getInt("EducationPopulation");				// do i need long?
-				String EducationLevel = results.getString("PercentEducationPopulation");
+				int EducationLevelID = results.getInt("EducationLevelID");
+				String EducationLevel = results.getString("EducationLevel");
 				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
 				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
