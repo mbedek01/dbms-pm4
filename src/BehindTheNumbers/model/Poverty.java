@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class Poverty {
 
-	// 7 attributes
+	// 6 attributes
 	protected int RecordID;								// primary key, NN, AI
 	protected int Year;
 	protected Integer PovertyPopulation;				// nullable
