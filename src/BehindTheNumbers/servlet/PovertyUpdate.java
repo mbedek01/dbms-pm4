@@ -61,7 +61,7 @@ protected PovertyDao povertyDao;
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
     		throws ServletException, IOException {
 		
-		System.out.println("Entered post method in servlet file");
+		
         // Map for storing messages.
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
