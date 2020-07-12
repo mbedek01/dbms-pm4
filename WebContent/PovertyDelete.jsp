@@ -16,7 +16,7 @@
 		<p>
 			<div <c:if test="${messages.disableSubmit}">style="display:none"</c:if>>
 				<label for="RecordID">"RecordID"</label>
-				<input id="RecordID" name="RecordID" value="${fn:escapeXml(param.username)}">
+				<input id="RecordID" name="RecordID" value="${fn:escapeXml(param.RecordID)}">
 			</div>
 		</p>
 		<p>

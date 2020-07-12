@@ -8,26 +8,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CRUD On Poverty</title>
+<title>Find a Poverty Record</title>
 </head>
 <body>
-	<h1>Create</h1>
-	<a href="povertycreate">Create Poverty Record</a>
-
-	<h1>Find</h1>
+	
+	<h1>Read: Find Poverty records for a given countyID for all age groups</h1>
 	<form action="povertyread" method="post">
-		<h2>Search for Poverty records by countyID</h2>
 		<p>
-			<label for="countyID">County ID</label> <input id="countyID"
-				name="countyID" value="${fn:escapeXml(param.countyID)}">
+			<label for="CountyID">CountyID</label> 
+			<input id="CountyID" name="CountyID" value="${fn:escapeXml(param.CountyID)}">
 		</p>
 		<p>
-			<input type="submit"> <br /> <br /> <br /> <span
-				id="successMessage"><b>${messages.success}</b></span>
+			<input type="submit"> 
+			<br /><br /><br /> 
+			<span id="successMessage"><b>${messages.success}</b></span>
 		</p>
 	</form>
-
-	<h2>Matching Poverty Records</h2>
+	
+	<h2>Matching Poverty records</h2>
 	<table border="1">
 		<tr>
 			<th>RecordID</th>
@@ -48,7 +46,9 @@
 			</tr>
 		</c:forEach>
 	</table>
-
+	<h1>Create</h1>
+	<a href="povertycreate">Create Poverty Record</a>
+	
 	<h1>Update</h1>
 	<a href="povertyupdate">Update Poverty Record</a>
 

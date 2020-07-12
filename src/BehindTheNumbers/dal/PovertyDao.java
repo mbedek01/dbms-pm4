@@ -111,9 +111,11 @@ public class PovertyDao {
 	 */
 	public Poverty getPovertyRecordByID(int recordID) throws SQLException {
 		
+		System.out.println("Inside povertydetrecordbyID method");
+		System.out.printf("RecordId received: %d\n", recordID);
+		
 		String selectPoverty =
-			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
-			+ "AgeGroupID,CountyID " +
+			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,AgeGroupID,CountyID " +
 			"FROM Poverty " +
 			"WHERE RecordID=?;";
 		
@@ -136,6 +138,10 @@ public class PovertyDao {
 				//String ConfidenceInterval = results.getString("ConfidenceInterval");
 				int AgeGroupID = results.getInt("AgeGroupID");
 				int CountyID = results.getInt("CountyID");
+				
+				System.out.printf("Getting the new record requested: RecordID: %d, Year: %d, PovPop: %d,"
+						+ "PercPop: %f, AgeID: %d, CountyID %d\n", RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
+						AgeGroupID, CountyID);
 				
 				Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
 						AgeGroupID, CountyID);

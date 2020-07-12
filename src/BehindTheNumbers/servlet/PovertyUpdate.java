@@ -73,12 +73,10 @@ protected PovertyDao povertyDao;
         } else {
         	try {
         		int RecordId = Integer.parseInt(id);
-        		System.out.printf("RecordID received: %d \n", RecordId);
+        		
         		
         		Poverty poverty = povertyDao.getPovertyRecordByID(RecordId);
         		
-        		System.out.printf("RecordId: %d, year: %d, percPov: %f\n", poverty.getRecordID(), 
-        				poverty.getYear(), poverty.getPercentPovertyPopulation());
         		
         		if(poverty == null) {
         			messages.put("success", "RecordID does not exist. No update to perform.");
@@ -91,9 +89,6 @@ protected PovertyDao povertyDao;
         	        	int newPovPopulation = Integer.parseInt(newPovertyPopulation);
         	        	poverty = povertyDao.updateTotalPopulationinPoverty(poverty, newPovPopulation);
         	        	
-        	        	System.out.printf("Updated poverty: Record: %d, Year: %d, PercPop: %f\n", 
-        	        			poverty.getRecordID(), poverty.getYear(), poverty.getPercentPovertyPopulation());
-        	        	messages.put("success", "Successfully updated " + id);
         	        }
         		}
         		req.setAttribute("poverty", poverty);

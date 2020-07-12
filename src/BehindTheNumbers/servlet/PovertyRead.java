@@ -1,5 +1,6 @@
 package BehindTheNumbers.servlet;
 
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import BehindTheNumbers.dal.PovertyDao;
 import BehindTheNumbers.model.Poverty;
+
 
 
 
@@ -40,21 +42,21 @@ public class PovertyRead extends HttpServlet {
 		req.setAttribute("messages", messages);
 
 		List<Poverty> povList = new ArrayList<Poverty>();
-		String countyID = req.getParameter("CountyID");
+		String id = req.getParameter("CountyID");
 		
-		if (countyID == null || countyID.trim().isEmpty()) {
+		if (id == null || id.trim().isEmpty()) {
             messages.put("success", "Please enter a valid integer for countyID.");
         } else {
         	try {
 
-        		int countyId = Integer.parseInt(req.getParameter("CountyID"));
+        		int countyId = Integer.parseInt(id);
         		povList = povertyDao.getPovertyRecordsByCountyID(countyId);
         	} catch (SQLException e) {
         		e.printStackTrace();
         		throw new IOException(e);
         	}
-        	messages.put("success", "Displaying poverty records for County " + countyID);
-        	messages.put("previousCountyID", countyID);
+        	messages.put("success", "Displaying poverty records for County " + id);
+        	messages.put("previousCountyID", id);
         	req.setAttribute("povList", povList);
 
         	req.getRequestDispatcher("/PovertyRead.jsp").forward(req, resp);
@@ -63,7 +65,32 @@ public class PovertyRead extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		this.doGet(req, resp);
+		
+		
+		// Map for storing messages.
+        Map<String, String> messages = new HashMap<String, String>();
+        req.setAttribute("messages", messages);
+
+        List<Poverty> povList = new ArrayList<Poverty>();
+        
+        
+        String id = req.getParameter("CountyID");
+        if (id == null || id.trim().isEmpty()) {
+            messages.put("success", "Please enter a valid CountyID.");
+        } else {
+        	// Retrieve BlogUsers, and store as a message.
+        	try {
+        		int countyId = Integer.parseInt(id);
+            	povList = povertyDao.getPovertyRecordsByCountyID(countyId);
+            } catch (SQLException e) {
+    			e.printStackTrace();
+    			throw new IOException(e);
+            }
+        	messages.put("success", "Displaying results for " + id);
+        }
+        req.setAttribute("povList", povList);
+        
+        req.getRequestDispatcher("/PovertyRead.jsp").forward(req, resp);
 	}
 	
 }

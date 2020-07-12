@@ -23,7 +23,7 @@ public class Inserter {
 		
 		// read
 		
-		Poverty p1 = povertyDao.getPovertyRecordByID(1428);
+		Poverty p1 = povertyDao.getPovertyRecordByID(2);
 		
 		System.out.printf("Record: %d, Year: %d, povertyPop: %d, PercentPov: %f, AgeGroupID: %d, CountyID: %d \n",
 				p1.getRecordID(), p1.getYear(), p1.getPovertyPopulation(), p1.getPercentPovertyPopulation(), 
