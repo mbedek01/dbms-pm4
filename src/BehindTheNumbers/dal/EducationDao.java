@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import BehindTheNumbers.model.Education;
 import BehindTheNumbers.model.Employment;
@@ -20,6 +22,18 @@ import BehindTheNumbers.model.Employment;
  */
 public class EducationDao {
 
+	static final HashMap<String, String> mapNodelToSql = new HashMap<String, String>() {
+		{
+	put("NumberOfPeople", "Number of People");
+	}
+	};
+	
+	static final HashMap<String, String> mapSqlToModel = new HashMap<String, String>() {
+		{
+	put("Number of People", "NumberOfPeople");
+	}
+	};
+	
 	protected static ConnectionManager connectionManager;
 
 	private static EducationDao instance = null;
@@ -47,7 +61,7 @@ public class EducationDao {
 	public static Education create(Education education) throws SQLException {
 		
 		String insertEducation =
-			"INSERT INTO Education(Year,EducationLevelID,'Number of People',"
+			"INSERT INTO Education(Year,EducationLevelID,NumberOfPeople,"
 			+ "Percentage,CountyID) VALUES(?,?,?,?,?);";
 		
 		Connection connection = null;
@@ -63,7 +77,7 @@ public class EducationDao {
 			
 			insertStmt.setInt(1, education.getYear());
 			insertStmt.setInt(2, education.getEducationLevelID());
-			insertStmt.setObject(3, education.getNumberOfPeople(), Types.INTEGER);		// nullable
+			insertStmt.setObject(3, mapNodelToSql.get(education.getNumberOfPeople()), Types.INTEGER);		// nullable
 			insertStmt.setObject(4, education.getPercentage(), Types.DECIMAL);			// nullable
 			insertStmt.setInt(5, education.getCountyID());
 			
@@ -109,15 +123,11 @@ public class EducationDao {
 	
 	public Education getEducationRecordByID(int recordID) throws SQLException {
 		
-		String s = "Number of People";
-		String selectEducation = String.format("SELECT RecordID,Year,EducationLevelID,%s,Percentage,CountyID " +
-			"FROM Education " +
-			"WHERE RecordID=?;\n", s);
-	/*	String selectEducation =
-			"SELECT RecordID,Year,EducationLevelID,%s,Percentage,CountyID " +
+		
+		String selectEducation = "SELECT RecordID,Year,EducationLevelID,`Number of People`,Percentage,CountyID " +
 			"FROM Education " +
 			"WHERE RecordID=?;";
-	*/	
+		
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
 		ResultSet results = null;
@@ -169,7 +179,7 @@ public class EducationDao {
 public List<Education> getEducationRecordByCountyID(int countyID) throws SQLException {
 		
 		String selectEducation =
-				"SELECT RecordID,Year,EducationLevelID,'Number of People',Percentage,CountyID " +
+				"SELECT RecordID,Year,EducationLevelID,`Number of People`,Percentage,CountyID " +
 				"FROM Education " +
 				"WHERE CountyID=?;";
 		
@@ -229,12 +239,12 @@ public List<Education> getEducationRecordByCountyID(int countyID) throws SQLExce
 	 * This runs a SELECT statement and returns a single Education instance.
 	 * 
 	 */		
-	public List<Education> getEducationRecordByAgeGroup(int AgeGroupID) throws SQLException {
+	public List<Education> getEducationRecordByAgeGroup(int educationLevelID) throws SQLException {
 		
 		String selectEducation =
-				"SELECT RecordID,Year,EducationLevelID,'Number of People,Percentage,CountyID " +
+				"SELECT RecordID,Year,EducationLevelID,`Number of People`,Percentage,CountyID " +
 				"FROM Education " +
-				"WHERE AgeGroupID=?;";
+				"WHERE EducationLevelID=?;";
 		
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
@@ -243,7 +253,7 @@ public List<Education> getEducationRecordByCountyID(int countyID) throws SQLExce
 		try {
 			connection = connectionManager.getConnection();
 			selectStmt = connection.prepareStatement(selectEducation);
-			selectStmt.setInt(1, AgeGroupID);
+			selectStmt.setInt(1, educationLevelID);
 	
 			results = selectStmt.executeQuery();
 			
@@ -294,7 +304,7 @@ public List<Education> getEducationRecordByCountyID(int countyID) throws SQLExce
 	 * Performs an UPDATE procedure
 	 */
 	public Education updateNumPeopleEducated(Education education, int newNumPeople) throws SQLException {
-		String updateExpiration = "UPDATE Poverty SET 'Number of People'=? WHERE RecordID=?;";
+		String updateExpiration = "UPDATE Education SET `Number of People`=? WHERE RecordID=?;";
 		Connection connection = null;
 		PreparedStatement updateStmt = null;
 		try {
