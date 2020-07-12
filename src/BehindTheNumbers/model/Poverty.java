@@ -12,7 +12,8 @@ public class Poverty {
 	protected int AgeGroupID;							// FK, NN
 	protected int CountyID;								// FK, NN
 	
-	// Constructor 1
+	
+	// Constructor which takes in all attributes
 	public Poverty(int RecordID, int Year, Integer PovertyPopulation, BigDecimal PercentPovertyPopulation,
 			int AgeGroupID, int CountyID) {
 		
@@ -24,13 +25,13 @@ public class Poverty {
 		this.CountyID = CountyID;
 	}
 	
-	// Constructor 2
+	// Constructor which takes in only RecordID
 	public Poverty(int RecordID) {
 		this.RecordID = RecordID;
 	}
 
 	
-	// Constructor 3
+	// Constructor with null recordId value for auto-increment purposes.
 	public Poverty(int Year, Integer PovertyPopulation, BigDecimal PercentPovertyPopulation,
 			int AgeGroupID, int CountyID) {
 		
@@ -41,6 +42,8 @@ public class Poverty {
 		this.AgeGroupID = AgeGroupID;
 		this.CountyID = CountyID;
 	}
+	
+	/* Setters and getters */
 	
 	public int getRecordID() {
 		return RecordID;

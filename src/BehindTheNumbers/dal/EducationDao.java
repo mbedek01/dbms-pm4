@@ -7,10 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 import BehindTheNumbers.model.Education;
+import BehindTheNumbers.model.Employment;
 
 
+/**
+ * EducationDao contributes to the DAL of the BehindTheNumbers application. It is an intermediary to
+ * perform CRUD operations on the Education table in the BehindTheNumbers schema in a SQL instance.
+ */
 public class EducationDao {
 
 	protected static ConnectionManager connectionManager;
@@ -34,13 +41,13 @@ public class EducationDao {
 	
 	/**
 	 * Create the Education instance.
-	 * This runs a DELETE statement.
+	 * This runs an INSERT statement.
 	 */
 	
 	public static Education create(Education education) throws SQLException {
 		
 		String insertEducation =
-			"INSERT INTO Education(Year,EducationLevelID,NumberOfPeople,"
+			"INSERT INTO Education(Year,EducationLevelID,'Number of People',"
 			+ "Percentage,CountyID) VALUES(?,?,?,?,?);";
 		
 		Connection connection = null;
@@ -56,7 +63,6 @@ public class EducationDao {
 			
 			insertStmt.setInt(1, education.getYear());
 			insertStmt.setInt(2, education.getEducationLevelID());
-	//		insertStmt.setString(3, education.getEducationLevel());
 			insertStmt.setObject(3, education.getNumberOfPeople(), Types.INTEGER);		// nullable
 			insertStmt.setObject(4, education.getPercentage(), Types.DECIMAL);			// nullable
 			insertStmt.setInt(5, education.getCountyID());
@@ -100,13 +106,18 @@ public class EducationDao {
 	 * 
 	 * 
 	 */
+	
 	public Education getEducationRecordByID(int recordID) throws SQLException {
 		
-		String selectEducation =
-			"SELECT RecordID,Year,EducationLevelID,NumberOfPeople,Percentage,CountyID " +
+		String s = "Number of People";
+		String selectEducation = String.format("SELECT RecordID,Year,EducationLevelID,%s,Percentage,CountyID " +
 			"FROM Education " +
-			"WHERE CountyID=?;";
-		
+			"WHERE RecordID=?;\n", s);
+	/*	String selectEducation =
+			"SELECT RecordID,Year,EducationLevelID,%s,Percentage,CountyID " +
+			"FROM Education " +
+			"WHERE RecordID=?;";
+	*/	
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
 		ResultSet results = null;
@@ -122,8 +133,7 @@ public class EducationDao {
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
 				int EducationLevelID = results.getInt("EducationLevelID");
-			//	String EducationLevel = results.getString("EducationLevel");
-				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
+				Integer NumberOfPeople = (Integer) results.getObject("Number of People");
 				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
@@ -151,20 +161,17 @@ public class EducationDao {
 	
 	
 	
-	
-	
 	/**
 	 * Get the education record by fetching it from your MySQL instance.
 	 * This runs a SELECT statement and returns a single Education instance.
 	 * 
-	 * 
-	 */
-	public Education getEducationRecordByCountyID(int countyID) throws SQLException {
+	 */	
+public List<Education> getEducationRecordByCountyID(int countyID) throws SQLException {
 		
 		String selectEducation =
-			"SELECT RecordID,Year,EducationLevelID,NumberOfPeople,Percentage,CountyID " +
-			"FROM Education " +
-			"WHERE CountyID=?;";
+				"SELECT RecordID,Year,EducationLevelID,'Number of People',Percentage,CountyID " +
+				"FROM Education " +
+				"WHERE CountyID=?;";
 		
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
@@ -174,55 +181,60 @@ public class EducationDao {
 			connection = connectionManager.getConnection();
 			selectStmt = connection.prepareStatement(selectEducation);
 			selectStmt.setInt(1, countyID);
+
 			results = selectStmt.executeQuery();
 			
-			
-			if(results.next()) {
+			List<Education> educationRecordsList = new ArrayList<>();
+
+			while (results.next()) {
+				
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
 				int EducationLevelID = results.getInt("EducationLevelID");		
-			//	String EducationLevel = results.getString("EducationLevel");
-				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
+				Integer NumberOfPeople = (Integer) results.getObject("Number of People");
 				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
 				Education education = new Education(RecordID, Year, EducationLevelID,
 						NumberOfPeople, Percentage, CountyID);
 				
-				return education;
+				educationRecordsList.add(education);
+				
 			}
+			
+			return educationRecordsList;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			if(connection != null) {
+			if (connection != null) {
 				connection.close();
 			}
-			if(selectStmt != null) {
+			if (selectStmt != null) {
 				selectStmt.close();
 			}
-			if(results != null) {
+			if (results != null) {
 				results.close();
 			}
 		}
-		return null;
 	}
 	
 	
 	
+
 	
 	/**
 	 * Get the education record by fetching it from your MySQL instance.
 	 * This runs a SELECT statement and returns a single Education instance.
 	 * 
-	 * 
-	 */
-	public Education getEducationRecordByEducationLevel(int educationLevelID) throws SQLException {
+	 */		
+	public List<Education> getEducationRecordByAgeGroup(int AgeGroupID) throws SQLException {
 		
 		String selectEducation =
-			"SELECT RecordID,Year,EducationLevelID,EducationLevel,NumberOfPeople,Percentage,CountyID " +
-			"FROM Education " +
-			"WHERE AgeGroupID=?;";
+				"SELECT RecordID,Year,EducationLevelID,'Number of People,Percentage,CountyID " +
+				"FROM Education " +
+				"WHERE AgeGroupID=?;";
 		
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
@@ -231,40 +243,48 @@ public class EducationDao {
 		try {
 			connection = connectionManager.getConnection();
 			selectStmt = connection.prepareStatement(selectEducation);
-			selectStmt.setInt(1, educationLevelID);
+			selectStmt.setInt(1, AgeGroupID);
+	
 			results = selectStmt.executeQuery();
 			
-			
-			if(results.next()) {
+			List<Education> educationRecordsList = new ArrayList<>();
+	
+			while (results.next()) {
+				
 				int RecordID = results.getInt("RecordID");
 				int Year = results.getInt("Year");
-				int EducationLevelID = results.getInt("EducationLevelID");
-		//		String EducationLevel = results.getString("EducationLevel");
-				Integer NumberOfPeople = (Integer) results.getObject("NumberOfPeople");
+				int EducationLevelID = results.getInt("EducationLevelID");		
+				Integer NumberOfPeople = (Integer) results.getObject("Number of People");
 				BigDecimal Percentage = (BigDecimal) results.getObject("Percentage");
 				int CountyID = results.getInt("CountyID");
 				
 				Education education = new Education(RecordID, Year, EducationLevelID,
 						NumberOfPeople, Percentage, CountyID);
 				
-				return education;
+				educationRecordsList.add(education);
+				
 			}
+			
+			return educationRecordsList;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			if(connection != null) {
+			if (connection != null) {
 				connection.close();
 			}
-			if(selectStmt != null) {
+			if (selectStmt != null) {
 				selectStmt.close();
 			}
-			if(results != null) {
+			if (results != null) {
 				results.close();
 			}
 		}
-		return null;
 	}
+
+
+
 	
 	
 	
@@ -274,7 +294,7 @@ public class EducationDao {
 	 * Performs an UPDATE procedure
 	 */
 	public Education updateNumPeopleEducated(Education education, int newNumPeople) throws SQLException {
-		String updateExpiration = "UPDATE Poverty SET NumberOfPeople=? WHERE RecordID=?;";
+		String updateExpiration = "UPDATE Poverty SET 'Number of People'=? WHERE RecordID=?;";
 		Connection connection = null;
 		PreparedStatement updateStmt = null;
 		try {

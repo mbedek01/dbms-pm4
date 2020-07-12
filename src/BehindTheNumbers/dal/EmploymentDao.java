@@ -7,10 +7,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import BehindTheNumbers.model.Employment;
+import BehindTheNumbers.model.Poverty;
 
+
+
+/**
+ * EmploymentDao contributes to the DAL of the BehindTheNumbers application. It is an intermediary to
+ * perform CRUD operations on the Employment table in the BehindTheNumbers schema in a SQL instance.
+ */
 public class EmploymentDao {
 
 	protected static ConnectionManager connectionManager;
@@ -34,7 +42,7 @@ public class EmploymentDao {
 	
 	/**
 	 * Create the Employment instance.
-	 * This runs a DELETE statement.
+	 * This runs an NSERT statement.
 	 */
 	
 	public static Employment create(Employment employment) throws SQLException {
@@ -42,7 +50,7 @@ public class EmploymentDao {
 		String insertEmployment =
 			"INSERT INTO Employment(Year,EmployedPopulation,UnemployedPopulation,UnemployedRate,"
 			+ "MedianHouseHoldIncomeInDollars,MedianHouseHoldIncomePercentageOfStateTotal,"
-			+ "CivilianLaborForceAnnualAverage,CountyID) VALUES(?,?,?,?,?,?,?,?,);";
+			+ "CivilianLaborForceAnnualAverage,CountyID) VALUES(?,?,?,?,?,?,?,?);";
 		
 		Connection connection = null;
 		PreparedStatement insertStmt = null;
@@ -95,21 +103,19 @@ public class EmploymentDao {
 	
 	
 	
-	
 	/**
-	 * Get the employment record by fetching it from your MySQL instance.
+	 * Get the employment record indexed by RecordID by fetching it from your MySQL instance.
 	 * This runs a SELECT statement and returns a single Employment instance.
 	 * 
-	 * 
 	 */
-	public Employment getEmploymentRecordByCountyID(int countyID) throws SQLException {
+	public List<Employment> getEmploymentRecordByCountyID(int countyID) throws SQLException {
 		
 		String selectEmployment =
-			"SELECT EmploymentRecordID,Year,EmployedPopulation,UnemployedPopulation,UnemployedRate,"
-			+ "MedianHouseHoldIncomeInDollars,MedianHouseHoldIncomePercentageOfStateTotal,"
-			+ "CivilianLaborForceAnnualAverage,CountyID " +
-			"FROM Employment " +
-			"WHERE CountyID=?;";
+				"SELECT EmploymentRecordID,Year,EmployedPopulation,UnemployedPopulation,UnemployedRate,"
+				+ "MedianHouseHoldIncomeInDollars,MedianHouseHoldIncomePercentageOfStateTotal,"
+				+ "CivilianLaborForceAnnualAverage,CountyID " +
+				"FROM Employment " +
+				"WHERE CountyID=?;";
 		
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
@@ -119,13 +125,16 @@ public class EmploymentDao {
 			connection = connectionManager.getConnection();
 			selectStmt = connection.prepareStatement(selectEmployment);
 			selectStmt.setInt(1, countyID);
+
 			results = selectStmt.executeQuery();
 			
-			
-			if(results.next()) {
+			List<Employment> employmentRecordsList = new ArrayList<>();
+
+			while (results.next()) {
+				
 				int EmploymentRecordID = results.getInt("EmploymentRecordID");
 				Integer Year = (Integer) results.getObject("Year");
-				Integer EmployedPopulation = (Integer) results.getObject("EmployedPopulation");		// do i need long?
+				Integer EmployedPopulation = (Integer) results.getObject("EmployedPopulation");
 				Integer UnemployedPopulation = (Integer) results.getObject("UnemployedPopulation");
 				BigDecimal UnemployedRate = (BigDecimal)results.getObject("UnemployedRate");
 				Integer MedianHouseHoldIncomeInDollars = 
@@ -140,40 +149,43 @@ public class EmploymentDao {
 						UnemployedPopulation, UnemployedRate, MedianHouseHoldIncomeInDollars, 
 						MedianHouseHoldIncomePercentageOfStateTotal, CivilianLaborForceAnnualAverage, CountyID);
 				
-				return employment;
+				employmentRecordsList.add(employment);
+				
 			}
+			
+			return employmentRecordsList;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			if(connection != null) {
+			if (connection != null) {
 				connection.close();
 			}
-			if(selectStmt != null) {
+			if (selectStmt != null) {
 				selectStmt.close();
 			}
-			if(results != null) {
+			if (results != null) {
 				results.close();
 			}
 		}
-		return null;
 	}
 	
 	
 	
 	
+	
 	/**
-	 * Get the employment record by fetching it from your MySQL instance.
+	 * Get the employment record indexed by RecordID by fetching it from your MySQL instance.
 	 * This runs a SELECT statement and returns a single Employment instance.
-	 * 
-	 * 
 	 */
 	public Employment getEmploymentRecordByID(int employmentrecordID) throws SQLException {
 		
-		String selectEmployment =
-			"SELECT RecordID,Year,EmploymentLevelID,EmploymentLevel,NumberOfPeople,Percentage,CountyID " +
+		String selectEmployment = "SELECT Year,EmployedPopulation,UnemployedPopulation,UnemployedRate,"
+				+ "MedianHouseHoldIncomeInDollars,MedianHouseHoldIncomePercentageOfStateTotal,"
+				+ "CivilianLaborForceAnnualAverage,CountyID " +
 			"FROM Employment " +
-			"WHERE AgeGroupID=?;";
+			"WHERE EmploymentRecordID=?;";
 		
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
@@ -189,7 +201,7 @@ public class EmploymentDao {
 			if(results.next()) {
 				int EmploymentRecordID = results.getInt("EmploymentRecordID");
 				Integer Year = (Integer) results.getObject("Year");
-				Integer EmployedPopulation = (Integer) results.getObject("EmployedPopulation");		// do i need long?
+				Integer EmployedPopulation = (Integer) results.getObject("EmployedPopulation");
 				Integer UnemployedPopulation = (Integer) results.getObject("UnemployedPopulation");
 				BigDecimal UnemployedRate = (BigDecimal)results.getObject("UnemployedRate");
 				Integer MedianHouseHoldIncomeInDollars = 
@@ -270,7 +282,7 @@ public class EmploymentDao {
 	 */
 	public Employment delete(Employment employment) throws SQLException {
 		
-		String deleteEmployment = "DELETE FROM Employment WHERE RecordID=?;";
+		String deleteEmployment = "DELETE FROM Employment WHERE EmploymentRecordID=?;";
 		Connection connection = null;
 		PreparedStatement deleteStmt = null;
 		

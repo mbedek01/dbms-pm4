@@ -14,7 +14,10 @@ import BehindTheNumbers.model.Poverty;
 
 
 
-
+/**
+ * PovertyDao contributes to the DAL of the BehindTheNumbers application. It is an intermediary to
+ * perform CRUD operations on the Poverty table in the BehindTheNumbers schema in a SQL instance.
+ */
 public class PovertyDao {
 
 	
@@ -65,7 +68,6 @@ public class PovertyDao {
 			insertStmt.setInt(1, poverty.getYear());
 			insertStmt.setObject(2, poverty.getPovertyPopulation(), Types.INTEGER);			// nullable
 			insertStmt.setObject(3, poverty.getPercentPovertyPopulation(), Types.DECIMAL);	// nullable
-	//		insertStmt.setString(4, poverty.getConfidenceInterval());						// nullable
 			insertStmt.setInt(4, poverty.getAgeGroupID());
 			insertStmt.setInt(5, poverty.getCountyID());
 			
@@ -104,10 +106,8 @@ public class PovertyDao {
 	
 	
 	/**
-	 * Get the poverty record by fetching it from your MySQL instance.
+	 * Get the poverty record indexed by RecordID, fetching it from your MySQL instance.
 	 * This runs a SELECT statement and returns a single Poverty instance.
-	 * 
-	 * 
 	 */
 	public Poverty getPovertyRecordByID(int recordID) throws SQLException {
 		
@@ -135,7 +135,6 @@ public class PovertyDao {
 				int Year = results.getInt("Year");
 				Integer PovertyPopulation = (Integer)results.getObject("PovertyPopulation");
 				BigDecimal PercentPovertyPopulation = (BigDecimal) results.getObject("PercentPovertyPopulation");
-				//String ConfidenceInterval = results.getString("ConfidenceInterval");
 				int AgeGroupID = results.getInt("AgeGroupID");
 				int CountyID = results.getInt("CountyID");
 				
@@ -167,7 +166,12 @@ public class PovertyDao {
 	
 	
 	
-	
+	/**
+	 * Method to read the poverty records for a particular county. This includes records from all age-groups
+	 * @param countyID the countyID by which records will be searched
+	 * @return a list of poverty records
+	 * @throws SQLException when a SQL error occurs
+	 */
 	public List<Poverty> getPovertyRecordsByCountyID(int countyID) throws SQLException {
 		String selectPoverty =
 				"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,AgeGroupID,CountyID " +
@@ -219,123 +223,59 @@ public class PovertyDao {
 	
 	
 	
-	
-	
-/*	
 	/**
-	 * Get the poverty record by fetching it from your MySQL instance.
+	 * Get the poverty record indexed by AgeGroup by fetching it from your MySQL instance.
 	 * This runs a SELECT statement and returns a single Poverty instance.
-	 * 
-	 * 
-	 
-	public Poverty getPovertyRecordByCountyID(int countyID) throws SQLException {
-		
-		String selectPoverty =
-			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
-			+ "AgeGroupID,CountyID " +
-			"FROM Poverty " +
-			"WHERE CountyID=?;";
-		
-		Connection connection = null;
-		PreparedStatement selectStmt = null;
-		ResultSet results = null;
-		
-		try {
-			connection = connectionManager.getConnection();
-			selectStmt = connection.prepareStatement(selectPoverty);
-			selectStmt.setInt(1, countyID);
-			results = selectStmt.executeQuery();
-			
-			
-			if(results.next()) {
-				int RecordID = results.getInt("RecordID");
-				int Year = results.getInt("Year");
-				Integer PovertyPopulation = (Integer)results.getObject("PovertyPopulation");
-				BigDecimal PercentPovertyPopulation = (BigDecimal) results.getObject("PercentPovertyPopulation");
-				//String ConfidenceInterval = results.getString("ConfidenceInterval");
-				int AgeGroupID = results.getInt("AgeGroupID");
-				int CountyID = results.getInt("CountyID");
-				
-				Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
-						AgeGroupID, CountyID);
-				
-				return poverty;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if(connection != null) {
-				connection.close();
-			}
-			if(selectStmt != null) {
-				selectStmt.close();
-			}
-			if(results != null) {
-				results.close();
-			}
-		}
-		return null;
-	}
-	
-*/	
-	
-	
-	/**
-	 * Get the poverty record by fetching it from your MySQL instance.
-	 * This runs a SELECT statement and returns a single Poverty instance.
-	 * 
 	 * 
 	 */
-	public Poverty getPovertyRecordByAgeGroup(int ageGroupID) throws SQLException {
-		
+	public List<Poverty> getPovertyRecordsByAgeGroup(int ageGroupID) throws SQLException {
 		String selectPoverty =
-			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
-			+ "AgeGroupID,CountyID " +
-			"FROM Poverty " +
-			"WHERE AgeGroupID=?;";
-		
+				"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,AgeGroupID,CountyID " +
+				"FROM Poverty " +
+				"WHERE AgeGroupID=?;";
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
 		ResultSet results = null;
-		
 		try {
 			connection = connectionManager.getConnection();
 			selectStmt = connection.prepareStatement(selectPoverty);
 			selectStmt.setInt(1, ageGroupID);
+
 			results = selectStmt.executeQuery();
 			
-			
-			if(results.next()) {
-				int RecordID = results.getInt("RecordID");
-				int Year = results.getInt("Year");
-				Integer PovertyPopulation = (Integer)results.getObject("PovertyPopulation");
-				BigDecimal PercentPovertyPopulation = (BigDecimal) results.getObject("PercentPovertyPopulation");
-				//String ConfidenceInterval = results.getString("ConfidenceInterval");
-				int AgeGroupID = results.getInt("AgeGroupID");
-				int CountyID = results.getInt("CountyID");
+			List<Poverty> povertyRecordsList = new ArrayList<>();
+
+			while (results.next()) {
 				
-				Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
-						AgeGroupID, CountyID);
-				
-				return poverty;
+					int RecordID = results.getInt("RecordID");
+					int Year = results.getInt("Year");
+					Integer PovertyPopulation = (Integer)results.getObject("PovertyPopulation");
+					BigDecimal PercentPovertyPopulation = (BigDecimal) results.getObject("PercentPovertyPopulation");
+					int AgeGroupID = results.getInt("AgeGroupID");
+					int CountyID = results.getInt("CountyID");
+					
+					Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
+							AgeGroupID, CountyID);
+					povertyRecordsList.add(poverty);
 			}
+			
+			return povertyRecordsList;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			if(connection != null) {
+			if (connection != null) {
 				connection.close();
 			}
-			if(selectStmt != null) {
+			if (selectStmt != null) {
 				selectStmt.close();
 			}
-			if(results != null) {
+			if (results != null) {
 				results.close();
 			}
 		}
-		return null;
 	}
+	
 	
 	
 	
