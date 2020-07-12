@@ -13,5 +13,29 @@
     <servlet-name>PovertyCreate</servlet-name>
     <url-pattern>/povertycreate</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>PovertyUpdate</servlet-name>
+    <servlet-class>BehindTheNumbers.servlet.PovertyUpdate</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PovertyUpdate</servlet-name>
+    <url-pattern>/povertyupdate</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>PovertyRead</servlet-name>
+    <servlet-class>BehindTheNumbers.servlet.PovertyRead</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PovertyRead</servlet-name>
+    <url-pattern>/povertyread</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>PovertyDelete</servlet-name>
+    <servlet-class>BehindTheNumbers.servlet.PovertyDelete</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PovertyDelete</servlet-name>
+    <url-pattern>/povertydelete</url-pattern>
+  </servlet-mapping>
   -->
 </web-app>
