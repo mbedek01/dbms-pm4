@@ -19,7 +19,7 @@ import BehindTheNumbers.model.Poverty;
 
 
 @WebServlet("/povertyread")
-@SuppressWarnings("serial")
+
 public class PovertyRead extends HttpServlet {
 
 	/**
@@ -40,9 +40,9 @@ public class PovertyRead extends HttpServlet {
 		req.setAttribute("messages", messages);
 
 		List<Poverty> povList = new ArrayList<Poverty>();
-		String CountyID = req.getParameter("CountyID");
+		String countyID = req.getParameter("CountyID");
 		
-		if (CountyID == null || CountyID.trim().isEmpty()) {
+		if (countyID == null || countyID.trim().isEmpty()) {
             messages.put("success", "Please enter a valid integer for countyID.");
         } else {
         	try {
@@ -53,8 +53,8 @@ public class PovertyRead extends HttpServlet {
         		e.printStackTrace();
         		throw new IOException(e);
         	}
-        	messages.put("success", "Displaying poverty records for County " + CountyID);
-        	messages.put("previousCountyID", "" + CountyID.toString());
+        	messages.put("success", "Displaying poverty records for County " + countyID);
+        	messages.put("previousCountyID", countyID);
         	req.setAttribute("povList", povList);
 
         	req.getRequestDispatcher("/PovertyRead.jsp").forward(req, resp);

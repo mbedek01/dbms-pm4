@@ -115,7 +115,7 @@ public class PovertyDao {
 			"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
 			+ "AgeGroupID,CountyID " +
 			"FROM Poverty " +
-			"WHERE CountyID=?;";
+			"WHERE RecordID=?;";
 		
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
@@ -138,7 +138,7 @@ public class PovertyDao {
 				int CountyID = results.getInt("CountyID");
 				
 				Poverty poverty = new Poverty(RecordID, Year, PovertyPopulation, PercentPovertyPopulation,
-						 AgeGroupID, CountyID);
+						AgeGroupID, CountyID);
 				
 				return poverty;
 			}
@@ -164,8 +164,7 @@ public class PovertyDao {
 	
 	public List<Poverty> getPovertyRecordsByCountyID(int countyID) throws SQLException {
 		String selectPoverty =
-				"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,"
-				+ "AgeGroupID,CountyID " +
+				"SELECT RecordID,Year,PovertyPopulation,PercentPovertyPopulation,AgeGroupID,CountyID " +
 				"FROM Poverty " +
 				"WHERE CountyID=?;";
 		Connection connection = null;
