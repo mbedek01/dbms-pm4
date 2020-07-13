@@ -113,7 +113,7 @@ public class EmploymentDao {
 		String selectEmployment =
 				"SELECT EmploymentRecordID,Year,EmployedPopulation,UnemployedPopulation,UnemployedRate,"
 				+ "MedianHouseHoldIncomeInDollars,MedianHouseHoldIncomePercentageOfStateTotal,"
-				+ "CivilianLaborForceAnnualAverage,CountyID " +
+				+ "`Civilian Labor Force Annual Average`,CountyID " +
 				"FROM Employment " +
 				"WHERE CountyID=?;";
 		
@@ -142,7 +142,7 @@ public class EmploymentDao {
 				BigDecimal MedianHouseHoldIncomePercentageOfStateTotal = 
 						(BigDecimal) results.getObject("MedianHouseHoldIncomePercentageOfStateTotal");
 				Integer CivilianLaborForceAnnualAverage = 
-						(Integer) results.getObject("CivilianLaborForceAnnualAverage");
+						(Integer) results.getObject("Civilian Labor Force Annual Average");
 				int CountyID = results.getInt("CountyID");
 				
 				Employment employment = new Employment(EmploymentRecordID, Year, EmployedPopulation, 
@@ -181,9 +181,9 @@ public class EmploymentDao {
 	 */
 	public Employment getEmploymentRecordByID(int employmentrecordID) throws SQLException {
 		
-		String selectEmployment = "SELECT Year,EmployedPopulation,UnemployedPopulation,UnemployedRate,"
+		String selectEmployment = "SELECT EmploymentRecordID,Year,EmployedPopulation,UnemployedPopulation,UnemployedRate,"
 				+ "MedianHouseHoldIncomeInDollars,MedianHouseHoldIncomePercentageOfStateTotal,"
-				+ "CivilianLaborForceAnnualAverage,CountyID " +
+				+ "`Civilian Labor Force Annual Average`,CountyID " +
 			"FROM Employment " +
 			"WHERE EmploymentRecordID=?;";
 		
@@ -209,7 +209,7 @@ public class EmploymentDao {
 				BigDecimal MedianHouseHoldIncomePercentageOfStateTotal = 
 						(BigDecimal) results.getObject("MedianHouseHoldIncomePercentageOfStateTotal");
 				Integer CivilianLaborForceAnnualAverage = 
-						(Integer) results.getObject("CivilianLaborForceAnnualAverage");
+						(Integer) results.getObject("Civilian Labor Force Annual Average");
 				int CountyID = results.getInt("CountyID");
 				
 				Employment employment = new Employment(EmploymentRecordID, Year, EmployedPopulation, 
@@ -245,7 +245,7 @@ public class EmploymentDao {
 	 * Performs an UPDATE procedure
 	 */
 	public Employment updateNumUnemployed(Employment employment, int newNumUnemployed) throws SQLException {
-		String updateExpiration = "UPDATE Employment SET UnemployedPopulation=? WHERE RecordID=?;";
+		String updateExpiration = "UPDATE Employment SET UnemployedPopulation=? WHERE EmploymentRecordID=?;";
 		Connection connection = null;
 		PreparedStatement updateStmt = null;
 		try {
