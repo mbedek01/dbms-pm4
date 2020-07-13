@@ -50,7 +50,7 @@ public class EmploymentDao {
 		String insertEmployment =
 			"INSERT INTO Employment(Year,EmployedPopulation,UnemployedPopulation,UnemployedRate,"
 			+ "MedianHouseHoldIncomeInDollars,MedianHouseHoldIncomePercentageOfStateTotal,"
-			+ "CivilianLaborForceAnnualAverage,CountyID) VALUES(?,?,?,?,?,?,?,?);";
+			+ "`Civilian Labor Force Annual Average`,CountyID) VALUES(?,?,?,?,?,?,?,?);";
 		
 		Connection connection = null;
 		PreparedStatement insertStmt = null;
