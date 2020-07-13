@@ -22,17 +22,6 @@ import BehindTheNumbers.model.Employment;
  */
 public class EducationDao {
 
-	static final HashMap<String, String> mapNodelToSql = new HashMap<String, String>() {
-		{
-	put("NumberOfPeople", "Number of People");
-	}
-	};
-	
-	static final HashMap<String, String> mapSqlToModel = new HashMap<String, String>() {
-		{
-	put("Number of People", "NumberOfPeople");
-	}
-	};
 	
 	protected static ConnectionManager connectionManager;
 
@@ -61,7 +50,7 @@ public class EducationDao {
 	public static Education create(Education education) throws SQLException {
 		
 		String insertEducation =
-			"INSERT INTO Education(Year,EducationLevelID,NumberOfPeople,"
+			"INSERT INTO Education(Year,EducationLevelID,`Number of People`,"
 			+ "Percentage,CountyID) VALUES(?,?,?,?,?);";
 		
 		Connection connection = null;
@@ -77,7 +66,7 @@ public class EducationDao {
 			
 			insertStmt.setInt(1, education.getYear());
 			insertStmt.setInt(2, education.getEducationLevelID());
-			insertStmt.setObject(3, mapNodelToSql.get(education.getNumberOfPeople()), Types.INTEGER);		// nullable
+			insertStmt.setObject(3, education.getNumberOfPeople(), Types.INTEGER);
 			insertStmt.setObject(4, education.getPercentage(), Types.DECIMAL);			// nullable
 			insertStmt.setInt(5, education.getCountyID());
 			
